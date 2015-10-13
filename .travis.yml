@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '4.2'
-script: npm run-script deploy
+script: npm run deploy
 env:
   global:
     - GH_REF: github.com/johnwards/react-product.git

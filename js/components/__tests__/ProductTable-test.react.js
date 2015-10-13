@@ -8,18 +8,26 @@ describe("ProductTable", function() {
         var TestUtils = require("react-addons-test-utils");
         var ProductTable = require("../ProductTable.react.js");
 
-        // Setup a fake server to handle the ajax call mocking
-        var sinon = require("sinon");
-        var server = sinon.fakeServer.create();
-        // Using a regular expression to match urls, this gets around the cache busting techinques of ajax libraries
-        server.respondWith('GET', /\/productstub/, '{ "worksById": { "1": { "Title": { "TitleText": "This is a book about a dog" } }, "2": { "Title": { "TitleText": "This is a book about a CAT" } }, "3": { "Title": { "TitleText": "This is not a book, it is a cat" } } }}');
-        
+        var products = {
+            "0": {
+                "Title": {
+                    "TitleText": "This is a book about a dog"
+                }
+            },
+            "1": {
+                "Title": {
+                    "TitleText": "This is a book about a CAT"
+                }
+            },
+            "3": {
+                "Title": {
+                    "TitleText": "This is not a book, it is a cat"
+                }
+            }
+        };
         var productTable = TestUtils.renderIntoDocument(
-          <ProductTable url="/productstub" />
+          <ProductTable products={products}/>
         );
-        server.respond();
-        // Removes the mock
-        server.restore();
 
         //We should at least have 3 products
         var productList = TestUtils.scryRenderedDOMComponentsWithTag(
@@ -47,7 +55,7 @@ describe("ProductTable", function() {
         //We should still have 3 books
         FilterHelper("book", 3);
         //We should have 2 books
-        FilterHelper("cat", 2);
+        FilterHelper("CAT", 2);
         //We should have 1 book
         FilterHelper("dog", 1);
 

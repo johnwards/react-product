@@ -9,7 +9,7 @@ class ProductRow extends React.Component
     {
         var product = this.props.product;
         return (
-            <li className="list-group-item">({product.id}) {product.title}</li> 
+            <li className="list-group-item">{product.Title.TitleText}</li> 
         );
     }
 }
@@ -20,12 +20,17 @@ class Products extends React.Component
     {
         var rows = [];
         var filterText = this.props.filterText;
-        this.props.products.forEach(product => {
-            if (product.title.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
-                return;
+        for (let i in this.props.products)
+        {
+            var product = this.props.products[i];
+            // Simple search in the title for the filter words
+            if (product.Title.TitleText.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+                //No Match, moving on
+                continue;
             }
-            rows.push(<ProductRow product={product} key={product.id} />);
-        });
+            var rowKey = i + product.Title.TitleText;
+            rows.push(<ProductRow product={product} key={rowKey} />);
+        }
         return (
             <ul className="list-group">{rows}</ul>
         );
@@ -34,11 +39,16 @@ class Products extends React.Component
 
 class SearchBar extends React.Component 
 {
-    handleChange() 
+    constructor() 
     {
-        this.props.onUserInput(
-            ReactDOM.findDOMNode(this.refs.filterTextInput).value
-        );
+        super();
+        // This bubbles the change to the search input back to the callback in parent
+        this.handleChange = () => 
+        {
+            this.props.onUserInput(
+                ReactDOM.findDOMNode(this.refs.filterTextInput).value
+            );
+        }
     }
 
     render() 
@@ -62,49 +72,18 @@ class ProductTable extends React.Component
     constructor() 
     {
         super()
+        //Set defaults
         this.state = {
-            filterText: "",
-            products: new Set()
+            filterText: ""
         }
-    }
-    
-    transformRemoteDataToLocal(remoteData) 
-    {
-        // There is a lot of data in the ajax call, we only need a small proprtion for this widget
-        var returnData = new Set();
-        if (remoteData.worksById) {
-            for (var productId in remoteData.worksById) {
-                returnData.add({
-                    "id": productId,
-                    "title": remoteData.worksById[productId].Title.TitleText
-                });
-            }
+        // This is called by search bar when input is entered
+        // Updates the state, which causes an update to the UI
+        this.handleUserInput = filterText => 
+        {
+            this.setState({
+                filterText: filterText
+            });
         }
-        return returnData;
-    }
-
-    componentDidMount() 
-    {
-        $.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            cache: false,
-            success: data => {
-                this.setState({
-                    products: this.transformRemoteDataToLocal(data)
-                });
-            }.bind(this),
-            error: (xhr, status, err) => {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
-    }
-
-    handleUserInput(filterText) 
-    {
-        this.setState({
-            filterText: filterText
-        });
     }
 
     render() 
@@ -115,7 +94,7 @@ class ProductTable extends React.Component
                     filterText={this.state.filterText}
                     onUserInput={this.handleUserInput} />
                 <Products 
-                    products={this.state.products} 
+                    products={this.props.products} 
                     filterText={this.state.filterText} />
             </div>
         );

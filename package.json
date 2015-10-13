@@ -4,6 +4,8 @@
   "description": "Product filting with react",
   "repository": "https://github.com/johnwards/react-product",
   "dependencies": {
+    "falcor": "^0.1.13",
+    "falcor-http-datasource": "^0.1.2",
     "jquery-browserify": "^1.8.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0"
@@ -14,8 +16,9 @@
     "browserify": "^11.2.0",
     "http-server": "^0.8.5",
     "jest-cli": "^0.5.10",
+    "livereloadify": "^2.0.0",
     "react-addons-test-utils": "^0.14.0",
-    "sinon": "^1.17.1",
+    "uglify-js": "^2.5.0",
     "watchify": "^3.4.0"
   },
   "author": "John Wards",
@@ -33,9 +36,12 @@
     ]
   },
   "scripts": {
+    "start": "npm run watch && npm run livereload && npm run serve",
     "serve": "./node_modules/.bin/http-server -p 8080",
-    "watch": "./node_modules/.bin/watchify js/app.js -o public/js/bundle.js",
-    "build": "./node_modules/.bin/browserify js/app.js -o public/js/bundle.js",
+    "livereload": "./node_modules/.bin/livereloadify public",
+    "watch": "./node_modules/.bin/watchify -d js/app.js -o public/js/bundle.js",
+    "build": "./node_modules/.bin/browserify js/app.js -o public/js/bundle.js && npm run ugly",
+    "ugly": "./node_modules/.bin/uglifyjs --compress --mangle -o public/js/bundle.js -- public/js/bundle.js",
     "test": "jest",
     "deploy": "./scripts/deploy-ghpages.sh"
   }

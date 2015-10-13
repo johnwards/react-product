@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir public/js
-npm run-script build
+npm run build
 ( cd public
  git init
  git config user.name "Travis-CI"
