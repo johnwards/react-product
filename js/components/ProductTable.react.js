@@ -3,20 +3,24 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var $ = require('jquery-browserify');
 
-var ProductRow = React.createClass({
-    render: function() {
+class ProductRow extends React.Component 
+{
+    render()
+    {
         var product = this.props.product;
         return (
             <li className="list-group-item">({product.id}) {product.title}</li> 
         );
     }
-});
+}
 
-var Products = React.createClass({
-    render: function() {
+class Products extends React.Component 
+{
+    render()
+    {
         var rows = [];
         var filterText = this.props.filterText;
-        this.props.products.forEach(function(product) {
+        this.props.products.forEach(product => {
             if (product.title.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
                 return;
             }
@@ -26,15 +30,19 @@ var Products = React.createClass({
             <ul className="list-group">{rows}</ul>
         );
     }
-});
+}
 
-var SearchBar = React.createClass({
-    handleChange: function() {
+class SearchBar extends React.Component 
+{
+    handleChange() 
+    {
         this.props.onUserInput(
             ReactDOM.findDOMNode(this.refs.filterTextInput).value
         );
-    },
-    render: function() {
+    }
+
+    render() 
+    {
         return (
             <div className="form-group">
                 <input 
@@ -47,49 +55,60 @@ var SearchBar = React.createClass({
             </div>
         );
     }
-});
+}
 
-var ProductTable = React.createClass({
-    getInitialState: function() {
-        return {
+class ProductTable extends React.Component 
+{
+    constructor() 
+    {
+        super()
+        this.state = {
             filterText: "",
-            products: []
-        };
-    },
-    transformRemoteDataToLocal: function(remoteData) {
+            products: new Set()
+        }
+    }
+    
+    transformRemoteDataToLocal(remoteData) 
+    {
         // There is a lot of data in the ajax call, we only need a small proprtion for this widget
-        var returnData = [];
+        var returnData = new Set();
         if (remoteData.worksById) {
             for (var productId in remoteData.worksById) {
-                returnData.push({
+                returnData.add({
                     "id": productId,
                     "title": remoteData.worksById[productId].Title.TitleText
                 });
             }
         }
         return returnData;
-    },
-    componentDidMount: function() {
+    }
+
+    componentDidMount() 
+    {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: data => {
                 this.setState({
                     products: this.transformRemoteDataToLocal(data)
                 });
             }.bind(this),
-            error: function(xhr, status, err) {
+            error: (xhr, status, err) => {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    handleUserInput: function(filterText) {
+    }
+
+    handleUserInput(filterText) 
+    {
         this.setState({
             filterText: filterText
         });
-    },
-    render: function() {
+    }
+
+    render() 
+    {
         return (
             <div>
                 <SearchBar 
@@ -101,6 +120,6 @@ var ProductTable = React.createClass({
             </div>
         );
     }
-});
+}
 
 module.exports = ProductTable;
