@@ -1,3 +1,8 @@
 language: node_js
 node_js:
-  - "4.2"
+- '4.2'
+script: npm run-script deploy
+env:
+  global:
+    - GH_REF: github.com/johnwards/react-product.git
+    - secure: JLzRhcr5yCKrwPs5js5NC/C2GGzkfELixhLHg6KsMbM78oXwjRFeRKvlU/DYjv1Gcoe3Z9Z62k+/Mo986oqPVzlAt4FBMvIMMM/h68z4S8TFpq4S2oZvOiKMPDCHjrT38rf+/0NedaRMwAA6zoMOa2UhVvPAiJnt0eT+azja0g4SLhv13yfqU3bibO2bbNgoisaVRybRzQXVnXwP77BKD5k12++NJRIT2hTMyLOp44QbyDl2Gs+gAvEj6DfrPOlOH52rgsjrSvc/y4fT2UYjze90byMkve43gbYvRyFUtQ95XW2e9Q/0MS0qTCe5llBJj1DKKcJR2+bnk/uknD63Fo6//B8GxYWnvs8vY2j7+PfhNo8uLfmBXBerPRYrmqDFasU3I/5RwuHrGGfjWb3mQInENBNfQ+YPPf0+Iy9uIVeAekTIocJjJyFOZJZpMaIiNVGPqa/IH6YIzqls1wg6M6BvxbswF7PjTrSC0vr7JsGYyoYcsZKEo9GJQ6Zxw9miszGjb3l9untLHoOWUsARN+/WCfPsyRiLoLeGKGOK7Uz0NmJz9RpkI/Ml0eRXb4Nx7YcDbU/iC9FlzGTDxA4ZZcnR+cRFvsrHMhhaM4ZwdzbIysvn32qiLZ7Acb7VmleDSe5usgbm86vKbTAeKJ9wHBJ/WHnXIQfS1IUT7JCZkWU=
