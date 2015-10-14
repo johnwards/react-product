@@ -36,7 +36,7 @@
     ]
   },
   "scripts": {
-    "start": "npm run watch && npm run livereload && npm run serve",
+    "start": "npm run watch & npm run livereload & npm run serve",
     "serve": "./node_modules/.bin/http-server -p 8080",
     "livereload": "./node_modules/.bin/livereloadify public",
     "watch": "./node_modules/.bin/watchify -d js/app.js -o public/js/bundle.js",
