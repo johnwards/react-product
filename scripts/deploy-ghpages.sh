@@ -3,6 +3,7 @@
 mkdir public/js
 npm run build
 ( cd public
+ rm js/.gitignore
  git init
  git config user.name "Travis-CI"
  git config user.email "johnwards@gmail.com"
