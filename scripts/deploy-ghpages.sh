@@ -1,6 +1,5 @@
 #!/bin/bash
 
-mkdir public/js
 npm run build
 ( cd public
  rm js/.gitignore
